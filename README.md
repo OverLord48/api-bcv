@@ -52,21 +52,6 @@ DATABASE_NAME=bcv_api
 COLLECTION_NAME=tasas
 ```
 
-### 4. Configurar MongoDB Atlas
-1. Crea una cuenta en [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Crea un cluster gratuito
-3. Obtén tu connection string
-4. Agrega tu IP a la whitelist
-
-### 5. Desplegar en Vercel
-1. Importa el repositorio en [Vercel](https://vercel.com)
-2. Agrega las variables de entorno en la configuración
-3. Despliega
-
-### 6. Configurar GitHub Actions
-1. Ve a Settings > Secrets and variables > Actions
-2. Agrega el secret: `MONGODB_URI`
-
 ## 🧪 Desarrollo Local
 
 ```bash
