@@ -3,7 +3,7 @@ name: Actualizar Tasa BCV
 on:
   schedule:
     # Ejecutar todos los días a las 12:00 UTC (8:00 AM Venezuela)
-    - cron: '0 12 * * *'
+    - cron: '0 8 * * 1-5'
   workflow_dispatch: # Permite ejecución manual
 
 jobs:
