@@ -52,7 +52,10 @@ DATABASE_NAME=bcv_api
 COLLECTION_NAME=tasas
 ```
 ### 4. Direccion web de consulta
-`https://api-bcv-sigma.vercel.app/`
+
+```bash
+https://api-bcv-sigma.vercel.app/
+```
 
 ## 🧪 Desarrollo Local
 
