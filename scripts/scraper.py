@@ -16,21 +16,15 @@ class BCVScraper:
         self.tz = pytz.timezone("America/Caracas")
     
     def obtener_tasa(self):
-        """
-        Hace scraping del sitio del BCV para obtener la tasa del dólar.
-        Verifica que la fecha sea la actual antes de retornar el valor.
-        """
         try:
-            # Fecha actual en Venezuela
             today_vzla = datetime.now(self.tz).strftime('%Y-%m-%d')
             
             logger.info(f"Consultando tasa del BCV para hoy: {today_vzla}")
             
-            # Hacer request al BCV (sin verificar SSL como en el código original)
             response = requests.get(
                 self.url, 
                 headers=self.headers, 
-                verify=False,  # El BCV a veces tiene problemas con SSL
+                verify=False,
                 timeout=10
             )
             
@@ -39,11 +33,9 @@ class BCVScraper:
                     'exito': False,
                     'error': f'Error HTTP: {response.status_code}'
                 }
-            
-            # Parsear HTML
+
             soup = BeautifulSoup(response.text, 'html.parser')
             
-            # Obtener la fecha de la tasa publicada
             date_html = soup.find('span', {'class': 'date-display-single'})
             if not date_html:
                 return {
@@ -51,10 +43,8 @@ class BCVScraper:
                     'error': 'No se encontró la fecha en el sitio del BCV'
                 }
             
-            # Extraer fecha (formato: YYYY-MM-DD en el atributo content)
             date_str = date_html.get('content', '')[:10]
             
-            # Verificar que la tasa sea del día actual
             if date_str != today_vzla:
                 logger.warning(f"La tasa no está actualizada. Fecha BCV: {date_str}, Hoy: {today_vzla}")
                 return {
@@ -62,7 +52,6 @@ class BCVScraper:
                     'error': f'La tasa no está actualizada. Última actualización: {date_str}'
                 }
             
-            # Obtener el valor del dólar
             dolar_div = soup.find('div', {'id': 'dolar'})
             if not dolar_div:
                 return {
@@ -77,8 +66,6 @@ class BCVScraper:
                     'error': 'No se encontró el valor de la tasa'
                 }
             
-            # Limpiar y convertir el valor
-            # Formato BCV: "36.234,56" -> convertir a float
             valor_str = valor_tag.text.strip().replace('.', '').replace(',', '.')
             
             try:

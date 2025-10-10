@@ -34,7 +34,7 @@ class MongoDB:
         """Obtiene la tasa actual"""
         tasa = self.collection.find_one({'_id': 'tasa_actual'})
         if tasa:
-            tasa.pop('_id', None)  # Remover el _id de la respuesta
+            tasa.pop('_id', None)
         return tasa
     
     def close(self):
