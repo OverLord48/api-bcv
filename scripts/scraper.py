@@ -76,7 +76,7 @@ class BCVScraper:
                     'error': f'No se pudo convertir el valor: {valor_str}'
                 }
             
-            logger.info(f"✓ Tasa del BCV obtenida: {dolar_float} para fecha {date_str}")
+            logger.info(f"Tasa del BCV obtenida: {dolar_float} para fecha {date_str}")
             
             return {
                 'valor': dolar_float,

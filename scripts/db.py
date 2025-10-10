@@ -12,7 +12,6 @@ class MongoDB:
         self.collection = self.db[os.getenv('COLLECTION_NAME', 'tasas')]
     
     def actualizar_tasa(self, valor, fecha=None):
-        """Actualiza o inserta la tasa del día"""
         if fecha is None:
             fecha = datetime.now().strftime('%Y-%m-%d')
         
@@ -31,12 +30,10 @@ class MongoDB:
         return documento
     
     def obtener_tasa(self):
-        """Obtiene la tasa actual"""
         tasa = self.collection.find_one({'_id': 'tasa_actual'})
         if tasa:
             tasa.pop('_id', None)
         return tasa
     
     def close(self):
-        """Cierra la conexión"""
         self.client.close()
