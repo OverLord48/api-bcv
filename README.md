@@ -51,6 +51,8 @@ MONGODB_URI=tu_connection_string_de_mongodb
 DATABASE_NAME=bcv_api
 COLLECTION_NAME=tasas
 ```
+### 4. Direccion web de consulta
+`https://api-bcv-sigma.vercel.app/`
 
 ## 🧪 Desarrollo Local
 
