@@ -2,7 +2,7 @@ name: Actualizar Tasa BCV
 
 on:
   schedule:
-    # Ejecutar todos los días a las 12:00 UTC (8:00 AM Venezuela)
+    # Ejecutar de Lunes a Viernes a las 8:00 UTC (4:00 AM Venezuela)
     - cron: '0 8 * * 1-5'
   workflow_dispatch: # Permite ejecución manual
 
@@ -21,7 +21,7 @@ jobs:
     
     - name: Instalar dependencias
       run: |
-        pip install requests beautifulsoup4 pymongo python-dotenv lxml pytz
+        pip install requests beautifulsoup4 pymongo python-dotenv lxml pytz urllib3
     
     - name: Ejecutar scraper
       env:
@@ -34,13 +34,14 @@ jobs:
         from scripts.db import MongoDB
         
         scraper = BCVScraper()
-        resultado = scraper.obtener_tasa()
+        resultado = scraper.obtener_tasas()
         
         if resultado['exito']:
             db = MongoDB()
-            db.actualizar_tasa(resultado['valor'], resultado['fecha'])
+            db.actualizar_tasas(resultado['monedas'], resultado['fecha'])
             db.close()
-            print(f"✓ Tasa actualizada: {resultado['valor']} - {resultado['fecha']}")
+            print(f"✓ Tasas actualizadas para: {resultado['fecha']}")
+            print(f"✓ Monedas: {', '.join(resultado['monedas'].keys())}")
         else:
             print(f"✗ Error: {resultado['error']}")
             exit(1)

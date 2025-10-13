@@ -1,10 +1,10 @@
 # API Tasa BCV
 
-API REST para consultar la tasa de cambio del Banco Central de Venezuela (BCV).
+API REST para consultar las tasas de cambio del Banco Central de Venezuela (BCV).
 
 ## 🚀 Características
 
-- 📊 Obtiene la tasa oficial del BCV
+- 📊 Obtiene todas las tasas oficiales del BCV (USD, EUR, CNY, TRY, RUB)
 - 🔄 Actualización automática diaria vía GitHub Actions
 - ⚡ API rápida alojada en Vercel
 - 💾 Datos almacenados en MongoDB Atlas
@@ -12,21 +12,76 @@ API REST para consultar la tasa de cambio del Banco Central de Venezuela (BCV).
 
 ## 📡 Endpoints
 
-### GET `/api/tasa`
-Obtiene la tasa actual del dólar
+### GET `/api/tasas`
+Obtiene todas las tasas de cambio
 
 **Respuesta exitosa (200):**
 ```json
 {
   "exito": true,
   "datos": {
-    "valor": 36.50,
-    "fecha": "2025-10-09",
-    "ultima_actualizacion": "2025-10-09T12:00:00Z",
+    "fecha": "2025-10-13",
+    "ultima_actualizacion": "2025-10-13T08:00:00Z",
+    "monedas": {
+      "USD": {
+        "nombre": "Dólar estadounidense",
+        "simbolo": "$",
+        "valor": 36.50
+      },
+      "EUR": {
+        "nombre": "Euro",
+        "simbolo": "€",
+        "valor": 39.87
+      },
+      "CNY": {
+        "nombre": "Yuan chino",
+        "simbolo": "¥",
+        "valor": 5.12
+      }
+    },
     "fuente": "Banco Central de Venezuela"
   }
 }
 ```
+
+### GET `/api/tasa/<codigo_moneda>`
+Obtiene la tasa de una moneda específica
+
+**Ejemplos:**
+- `/api/tasa/USD` - Dólar estadounidense
+- `/api/tasa/EUR` - Euro
+- `/api/tasa/CNY` - Yuan chino
+
+**Respuesta exitosa (200):**
+```json
+{
+  "exito": true,
+  "datos": {
+    "fecha": "2025-10-13",
+    "ultima_actualizacion": "2025-10-13T08:00:00Z",
+    "moneda": {
+      "codigo": "USD",
+      "nombre": "Dólar estadounidense",
+      "simbolo": "$",
+      "valor": 36.50
+    },
+    "fuente": "Banco Central de Venezuela"
+  }
+}
+```
+
+### GET `/api/health`
+Verifica el estado de la API
+
+## 💱 Monedas Disponibles
+
+| Código | Moneda | Símbolo |
+|--------|--------|---------|
+| USD | Dólar estadounidense | $ |
+| EUR | Euro | € |
+| CNY | Yuan chino | ¥ |
+| TRY | Lira turca | ₺ |
+| RUB | Rublo ruso | ₽ |
 
 ### GET `/api/health`
 Verifica el estado de la API

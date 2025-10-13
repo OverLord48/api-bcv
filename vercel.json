@@ -7,7 +7,15 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/api/tasas",
+      "dest": "api/tasa.py"
+    },
+    {
+      "src": "/api/tasa/(.*)",
+      "dest": "api/tasa.py"
+    },
+    {
+      "src": "/api/health",
       "dest": "api/tasa.py"
     }
   ]

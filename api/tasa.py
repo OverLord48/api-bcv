@@ -9,20 +9,21 @@ from scripts.db import MongoDB
 
 app = Flask(__name__)
 
-@app.route('/api/tasa', methods=['GET'])
-def obtener_tasa():
+@app.route('/api/tasas', methods=['GET'])
+def obtener_todas_tasas():
+    """Endpoint que devuelve todas las tasas de cambio del BCV"""
     try:
         db = MongoDB()
-        tasa = db.obtener_tasa()
+        tasas = db.obtener_tasas()
         db.close()
         
-        if tasa:
+        if tasas:
             response = {
                 'exito': True,
                 'datos': {
-                    'valor': tasa['valor'],
-                    'fecha': tasa['fecha'],
-                    'ultima_actualizacion': tasa['ultima_actualizacion'],
+                    'fecha': tasas['fecha'],
+                    'ultima_actualizacion': tasas['ultima_actualizacion'],
+                    'monedas': tasas['monedas'],
                     'fuente': 'Banco Central de Venezuela'
                 }
             }
@@ -39,8 +40,38 @@ def obtener_tasa():
             'error': f'Error del servidor: {str(e)}'
         }), 500
 
+@app.route('/api/tasa/<codigo_moneda>', methods=['GET'])
+def obtener_tasa_especifica(codigo_moneda):
+    """Endpoint que devuelve la tasa de una moneda específica (USD, EUR, etc.)"""
+    try:
+        db = MongoDB()
+        tasa = db.obtener_tasa_moneda(codigo_moneda)
+        db.close()
+        
+        if tasa:
+            response = {
+                'exito': True,
+                'datos': {
+                    **tasa,
+                    'fuente': 'Banco Central de Venezuela'
+                }
+            }
+            return jsonify(response), 200
+        else:
+            return jsonify({
+                'exito': False,
+                'error': f'No se encontró la moneda {codigo_moneda.upper()}'
+            }), 404
+    
+    except Exception as e:
+        return jsonify({
+            'exito': False,
+            'error': f'Error del servidor: {str(e)}'
+        }), 500
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
+    """Endpoint de salud para verificar que la API está funcionando"""
     return jsonify({
         'status': 'ok',
         'servicio': 'API Tasa BCV'
