@@ -49,13 +49,11 @@ class BCVScraper:
             
             monedas = {}
             
-            # Buscar divs con IDs comunes de monedas
             divs_monedas = soup.find_all('div', id=re.compile(r'^(dolar|euro|yuan|lira|rublo)', re.IGNORECASE))
             
             for div in divs_monedas:
                 div_id = div.get('id', '')
                 
-                # Extraer valor
                 valor_tag = div.find('strong')
                 if not valor_tag:
                     continue
@@ -67,7 +65,6 @@ class BCVScraper:
                     logger.warning(f"No se pudo convertir valor en {div_id}")
                     continue
                 
-                # Determinar código de moneda basado en el ID
                 codigo = self._obtener_codigo_desde_id(div_id)
                 simbolo = self.simbolos.get(codigo, '')
                 nombre = self._obtener_nombre_desde_id(div_id)
@@ -95,7 +92,6 @@ class BCVScraper:
             return {'exito': False, 'error': str(e)}
     
     def _obtener_codigo_desde_id(self, div_id):
-        """Convierte el ID del div al código ISO de la moneda"""
         mapeo = {
             'dolar': 'USD',
             'euro': 'EUR',
@@ -107,7 +103,6 @@ class BCVScraper:
         return mapeo.get(div_id_lower, div_id.upper()[:3])
     
     def _obtener_nombre_desde_id(self, div_id):
-        """Convierte el ID del div a un nombre legible"""
         mapeo = {
             'dolar': 'Dólar estadounidense',
             'euro': 'Euro',

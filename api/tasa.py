@@ -11,7 +11,6 @@ app = Flask(__name__)
 
 @app.route('/api/tasas', methods=['GET'])
 def obtener_todas_tasas():
-    """Endpoint que devuelve todas las tasas de cambio del BCV"""
     try:
         db = MongoDB()
         tasas = db.obtener_tasas()
@@ -42,7 +41,6 @@ def obtener_todas_tasas():
 
 @app.route('/api/tasa/<codigo_moneda>', methods=['GET'])
 def obtener_tasa_especifica(codigo_moneda):
-    """Endpoint que devuelve la tasa de una moneda específica (USD, EUR, etc.)"""
     try:
         db = MongoDB()
         tasa = db.obtener_tasa_moneda(codigo_moneda)
@@ -71,12 +69,10 @@ def obtener_tasa_especifica(codigo_moneda):
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
-    """Endpoint de salud para verificar que la API está funcionando"""
     return jsonify({
         'status': 'ok',
         'servicio': 'API Tasa BCV'
     }), 200
 
-# Para desarrollo local
 if __name__ == '__main__':
     app.run(debug=True)

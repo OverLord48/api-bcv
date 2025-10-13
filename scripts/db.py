@@ -16,7 +16,7 @@ class MongoDB:
             fecha = datetime.now().strftime('%Y-%m-%d')
         
         documento = {
-            '_id': fecha,  # Usamos la fecha como ID único
+            '_id': fecha,  # Se usa la fecha como ID único
             'fecha': fecha,
             'ultima_actualizacion': datetime.now().isoformat(),
             'monedas': monedas
@@ -31,11 +31,9 @@ class MongoDB:
         return documento
     
     def obtener_tasas(self, fecha=None):
-        """Obtiene las tasas de una fecha específica (por defecto la más reciente)"""
         if fecha:
             tasas = self.collection.find_one({'_id': fecha})
         else:
-            # Obtener la más reciente
             tasas = self.collection.find_one(sort=[('fecha', -1)])
         
         if tasas:
@@ -43,7 +41,6 @@ class MongoDB:
         return tasas
     
     def obtener_tasa_moneda(self, codigo_moneda, fecha=None):
-        """Obtiene una moneda específica"""
         tasas = self.obtener_tasas(fecha)
         if tasas and 'monedas' in tasas:
             moneda = tasas['monedas'].get(codigo_moneda.upper())
@@ -59,7 +56,6 @@ class MongoDB:
         return None
     
     def obtener_historico(self, limite=30):
-        """Obtiene el histórico de tasas (últimos N días)"""
         cursor = self.collection.find().sort('fecha', -1).limit(limite)
         historico = []
         for doc in cursor:
