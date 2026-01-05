@@ -5,9 +5,11 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from flask import Flask, jsonify
+from flask_cors import CORS
 from scripts.db import MongoDB
 
 app = Flask(__name__)
+CORS(app, resources={r'/*': {'origins': '*'}})
 
 @app.route('/api/tasas', methods=['GET'])
 def obtener_todas_tasas():
